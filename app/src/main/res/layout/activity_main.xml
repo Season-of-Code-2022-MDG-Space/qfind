@@ -1,44 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+
+<!--button for starting extraction process-->
+
+
+<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <!--text view for displaying our extracted text-->
+    <TextView
+        android:id="@+id/idPDFTV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-        <!--text view for displaying our extracted text-->
-        <TextView
-            android:id="@+id/idPDFTV"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+</ScrollView>
 
-    </ScrollView>
+<Button
+    android:id="@+id/idBtnExtract"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="20dp"
+    android:text="SEE THE Text from ALL PDF"
+    android:textAllCaps="false" />
 
-    <!--button for starting extraction process-->
-    <Button
-        android:id="@+id/idBtnExtract"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:text="SEE THE Text from ALL PDF"
-        android:textAllCaps="false" />
+<Button
+    android:id="@+id/add_pdf"
+    android:layout_width="wrap_content"
+    android:layout_height="59dp"
+    android:layout_above="@+id/idBtnExtract"
+    android:layout_below="@+id/listBtn"
+    android:layout_alignParentStart="true"
+    android:layout_marginBottom="508dp"
+    android:gravity="center"
+    android:text="ADD PDF" />
 
-    <Button
-        android:id="@+id/listBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:text="See the list Files on which operations are performed"
-        />
+<Button
+    android:id="@+id/listBtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="20dp"
+    android:text="See the list Files on which operations are performed" />
 
 
 </RelativeLayout>
