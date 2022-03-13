@@ -1,59 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-tools:context=".MainActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
 <!--button for starting extraction process-->
 
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <ScrollView
+        android:id="@+id/scrollable"
+        android:layout_width="409dp"
+        android:layout_height="729dp"
 
-    <!--text view for displaying our extracted text-->
-    <TextView
-        android:id="@+id/idPDFTV"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <!-- textview to display the extracted text-->
+        <TextView
+            android:id="@+id/idPDFTV"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/the_q_bar"
+        android:layout_width="314dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="Enter the Text"
+        android:inputType="textPersonName"
+        android:textSize="24sp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/search"
+        android:layout_alignParentRight="true"
+        android:text="search"
+        />
+
+    <LinearLayout
+        android:id="@+id/Button_collection"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</ScrollView>
-
-<Button
-    android:id="@+id/idBtnExtract"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginBottom="20dp"
-    android:text="SEE THE Text from ALL PDF"
-    android:textAllCaps="false" />
-
-<Button
-    android:id="@+id/add_pdf"
-    android:layout_width="wrap_content"
-    android:layout_height="59dp"
-    android:layout_above="@+id/idBtnExtract"
-    android:layout_below="@+id/listBtn"
-    android:layout_alignParentStart="true"
-    android:layout_marginBottom="508dp"
-    android:gravity="center"
-    android:text="ADD PDF" />
-
-<Button
-    android:id="@+id/listBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginStart="20dp"
-    android:layout_marginTop="20dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginBottom="20dp"
-    android:text="See the list Files on which operations are performed" />
+        android:layout_height="139dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
 
+        <Button
+            android:id="@+id/listBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="list" />
+
+        <Button
+            android:id="@+id/idBtnExtract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:text="SEE Text"
+            android:textAllCaps="false" />
+
+
+
+
+        <Button
+            android:id="@+id/add_pdf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="ADD PDF" />
+
+    </LinearLayout>
 </RelativeLayout>
+
+
