@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     Button search_btn;
     Button listBtn;
     Button add_pdf_button;
-
+    String redText;
     String path;
     String the_search_text;
 
@@ -71,8 +72,12 @@ public class MainActivity extends AppCompatActivity {
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                readText();
                 the_search_text = editText.getText().toString();
+
                 searchTheText(the_search_text);
+
+
             }
         });
 
@@ -102,17 +107,89 @@ public class MainActivity extends AppCompatActivity {
         extractPDFBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                extractPDF();
+                readText();
+            //    extractPDF();
             }
         });
     }
 
 
+    private void readText(){
+        try{
+
+
+            //making the reader
+            PdfReader reader2 = new PdfReader("res/raw/pdf.pdf");
+            PdfReader reader = new PdfReader("/storage/emulated/0/Download/7366a7f1ec0912231deb90e1e086d0eb.pdf");
+
+            int n = reader.getNumberOfPages();
+            int n2 = reader2.getNumberOfPages();
+
+            for (int i = 0; i < n2; i++) {
+                redText  =redText+(PdfTextExtractor.getTextFromPage(reader2, i + 1).trim())+("\n\n");
+
+            }
+            Toast.makeText(MainActivity.this,"Reading Done",Toast.LENGTH_SHORT).show();
+
+
+            for (int i = 0; i < n; i++) {
+                if(PdfTextExtractor.getTextFromPage(reader, i + 1).trim().contains(the_search_text)){
+                    redText=redText+(PdfTextExtractor.getTextFromPage(reader, i + 1).trim())+("\n");
+                }
+            }
+
+
+        }catch(Exception e){
+            extractedTV.setText("Error found is : \n" + e);
+        }
+    }
+
+    public void searchTheText(String str){
+
+        int i = redText.indexOf(str);
+        int totalChr = redText.length();
+    //  extractedTV.setText(Integer.toString(totalChr));
+
+
+        if (totalChr>2000){
+            if(i>1000) {
+
+
+                String result = redText.substring(i - 1000,i)+" ||@@@|| "+redText.substring(i,i+str.length())+" ||@@@|| "
+                        + redText.substring(i+str.length(),totalChr);
+
+                //formatted text
+                String Highlighted_text= "<span style='background-color:purple'>"+str+"</span>";
+                //modify result
+                String highlighted_result = result.replaceAll(str,Highlighted_text);
+
+                extractedTV.setText(Html.fromHtml(highlighted_result,Html.FROM_HTML_MODE_LEGACY));
+            }
+            else {extractedTV.setText(redText.substring(0,i+1000));}
+        }
+        else extractedTV.setText(redText.substring(0,totalChr));
+
+
+
+
+        /*
+        if(i>500)
+        {String ss= redText.substring(i-500,i+500);
+           extractedTV.setText(ss);
+        }
+        else {
+            String ss = redText.substring(0, i+500);
+        }
+
+//        else
+//            extractedTV.setText("string not found");
+*/
+    }
+
 
     //method to searching and pasting the text from the PDF
 
-    private void searchTheText(String the_search_text) {
+    /*private void searchTheText(String the_search_text) {
         try {
 
             String pages_Containing_searched_text ="" ;
@@ -122,12 +199,12 @@ public class MainActivity extends AppCompatActivity {
 
          //   int n = reader.getNumberOfPages();
             int n2 = reader2.getNumberOfPages();
-/*
+
             for (int i = 0; i < n; i++) {
                 if(PdfTextExtractor.getTextFromPage(reader, i + 1).trim().contains(the_search_text)){
                     pages_Containing_searched_text.append(PdfTextExtractor.getTextFromPage(reader, i + 1).trim()).append("\n");
                 }
-            }*/
+            }
 
             for (int i = 0; i < n2; i++) {
 
@@ -146,12 +223,14 @@ public class MainActivity extends AppCompatActivity {
         catch (Exception e){
             extractedTV.setText("Error found is : \n" + e);
         }
-    }
+    }*/
 
 
 
 
-    private void extractPDF() {
+
+
+/*    private void extractPDF() {
             try {
 
 
@@ -172,15 +251,15 @@ public class MainActivity extends AppCompatActivity {
 
                 }*/
                 //secondPDF
-                for (int i = 0; i < n2; i++) {
+             /*   for (int i = 0; i < n2; i++) {
                     extractedText.append(PdfTextExtractor.getTextFromPage(reader2, i + 1).trim()).append("\n");
 
                 }
 
                 Toast.makeText(MainActivity.this,"now",Toast.LENGTH_SHORT).show();
-                boolean b
-                       b = extractedText.c
-                if()
+                boolean b;
+                    //   b = extractedText.contains("")
+              //  if()
                 extractedTV.setText(extractedText.toString());
 
 
@@ -190,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
 
                 extractedTV.setText("Error found is : \n" + e);
             }
-        }
+        }*/
 
 
 
