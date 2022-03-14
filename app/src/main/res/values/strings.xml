@@ -3,4 +3,9 @@
     <string name="camera">Camera</string>
     <string name="add_files">Add Files</string>
     <string name="added_files">Added Files</string>
+    <string name="app_under_construction_please_add_the_name_of_pdf_you_just_selected">ADD THE PATH OF THE FILE TO ADD THE PDF
+    TO THE APP____TO REMOVE WRITE THE INDEX AND CLICK ON REMOVE</string>
+
+    <string name="name">Name</string>
+    <string name="saved_paths">SAVED PATHS</string>
 </resources>

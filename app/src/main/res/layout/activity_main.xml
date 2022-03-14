@@ -43,29 +43,21 @@
         android:hint="Enter the Text"
         android:inputType="textPersonName"
         android:textSize="24sp" />
+
     <Button
+        android:id="@+id/search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/search"
         android:layout_alignParentRight="true"
-        android:text="search"
-        />
+        android:text="search" />
 
     <LinearLayout
         android:id="@+id/Button_collection"
         android:layout_width="match_parent"
-        android:layout_height="139dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-
-        <Button
-            android:id="@+id/listBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:text="list" />
 
         <Button
             android:id="@+id/idBtnExtract"
@@ -74,20 +66,27 @@
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:text="SEE Text"
+            android:layout_margin="8dp"
             android:textAllCaps="false" />
-
-
-
-
+        <Button
+            android:id="@+id/showpdf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:text="SEE PDF"
+            android:layout_margin="8dp"
+            android:textAllCaps="false" />
         <Button
             android:id="@+id/add_pdf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
+            android:layout_margin="8dp"
 
             android:layout_weight="1"
             android:gravity="center"
-            android:text="ADD PDF" />
+            android:text="MANAGE PDF" />
 
     </LinearLayout>
 </RelativeLayout>
