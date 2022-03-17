@@ -52,6 +52,7 @@ Button delete;
         ContentValues values = new ContentValues();
         values.put("PATH", str);
         db.insert("FILE_PATHS",null, values);
+
         updateTheTasks();
 
     }
