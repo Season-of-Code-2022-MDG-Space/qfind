@@ -292,17 +292,6 @@ Log.e(TAG, "searching doen");
 
         right_res.setVisibility(View.VISIBLE);
         left_res.setVisibility(View.VISIBLE);
-/*
-if(indexes.get(ResultIndex)>0){
-
-    if(totalChr  > 2000){
-
-
-    }else String resu redText
-
-
-}
-*/
 
             if (indexes.get(Result_Index) > 0) {
                 if (totalChr > 2000) {
