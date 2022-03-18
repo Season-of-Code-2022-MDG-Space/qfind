@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataHandler2 extends SQLiteOpenHelper {
-    private static final String db = "myDb";
+    private static final String db = "myDb2";
     private static final int version = 1;
 
 
@@ -16,7 +16,7 @@ public class DataHandler2 extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_WORD_TABLE = "CREATE TABLE NON_NOUNS (_id INTEGER PRIMARY KEY AUTOINCREMENT, WORD TEXT)";
+        String CREATE_WORD_TABLE = "CREATE TABLE NON_NOUNS (id INTEGER PRIMARY KEY AUTOINCREMENT, WORD TEXT)";
         sqLiteDatabase.execSQL(CREATE_WORD_TABLE);
 
         String verbs = "accept add admit alert allow amuse appreciate arrange attend attract avoid bathe battle belong bolt book borrow bow branch bury calculate camp care claim clip close coach collect compare concentrate contain crash cross curve cycle dam dance discover end enjoy entertain escape exercise fax help move park pass pause phone place point poke polish pray print puncture relax repair replace report return search serve settle shelter sign signal start stay steer stop store support surround telephone tour trade train transport travel trip try turn use visit wait walk wander want waste watch weigh need";
@@ -31,7 +31,7 @@ public class DataHandler2 extends SQLiteOpenHelper {
         String pronoun = "i we they me you us them it his her ours theirs this that these those who whom which what whose some all any many few each another anything everything nothing none other others several something most enough little more both either neither one much such";
         String[] pronounArray = pronoun.split("");
 
-        String determiner = "the a an this that these those my yours his her its our their a few a little much many any enough some most one all both half either neither each every other another such what rather quite";
+        String determiner = "the a an am this that these those my yours his her its our their a few a little much many any enough some most one all both half either neither each every other another such what rather quite";
         String determinerArray[] = determiner.split(" ");
 
         String conjunction = "but and that or as if when than because while where when wherever after so though since until whether before although nor like once unless now till for yet";
@@ -39,10 +39,10 @@ public class DataHandler2 extends SQLiteOpenHelper {
 
 
         for (int i =0 ; i< determinerArray.length;i++) {
-          //  insertData(s2, sqLiteDatabase);
+            //  insertData(s2, sqLiteDatabase);
             ContentValues values = new ContentValues();
             values.put("PATH", determinerArray[i]);
-        sqLiteDatabase.insert("NON_NOUNS",null, values);
+            sqLiteDatabase.insert("NON_NOUNS",null, values);
         }
         for (String s1 : pronounArray) {
             insertData(s1, sqLiteDatabase);

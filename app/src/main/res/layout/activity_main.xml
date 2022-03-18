@@ -13,7 +13,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#BDBABD"
+        android:background="#8ECAFA"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,9 +33,9 @@
                 android:layout_weight="1"
                 android:backgroundTint="#FFFFFF"
                 android:ems="10"
-                android:hint="Enter the Text"
+                android:hint="Enter the Question"
                 android:inputType="textPersonName"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
 
             <LinearLayout
@@ -78,9 +78,26 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
-
+                <ImageView
+                    android:id="@+id/piro_left_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/the_result_bar"
+                    android:layout_weight="1"/>
                 <ImageView
                     android:id="@+id/right_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+                <ImageView
+                    android:id="@+id/piro_right_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -96,7 +113,7 @@
         <ScrollView
             android:id="@+id/scrollable"
             android:layout_width="411dp"
-            android:layout_height="525dp"
+            android:layout_height="530dp"
 
             android:layout_marginStart="1dp"
             android:layout_marginTop="1dp"
@@ -108,22 +125,21 @@
             <!-- textview to display the extracted text-->
             <TextView
                 android:id="@+id/idPDFTV"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
         </ScrollView>
-
-
 
 
         <LinearLayout
             android:id="@+id/Button_collection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#EFB2EC"
+            android:layout_alignParentBottom="false"
+            android:background="#8ECAFA"
             android:orientation="horizontal"
 
             app:layout_constraintBottom_toBottomOf="parent"
