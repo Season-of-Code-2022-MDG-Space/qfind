@@ -90,7 +90,13 @@ public class MainActivity extends AppCompatActivity {
 
         piro_right_res.setOnClickListener(view -> {
             if(ResultIndex2< (indexes).size()){
+            ResultIndex2++;
+            }
+        });
 
+        piro_left_res.setOnClickListener(view -> {
+            if(ResultIndex2>0){
+                ResultIndex2--;
             }
         });
 
@@ -316,26 +322,70 @@ public class MainActivity extends AppCompatActivity {
 
         String  theResult = FuzzySearch.extractTop(st, Arrays.asList(allTheTxtInArray),6).toString();
 
-        extractedTV.setText(theResult);
-
-
         theResult = theResult.replaceAll("[^0-9]", " ");    // return the the string in form "  213 1234 1234 32 123"
+
         ArrayList<Integer> theNUmvber = new ArrayList<>();
+
         for(int k=0 ; k<theResult.length(); k++){
             String stree = "";
-            if ((int)theResult.charAt(k)!=32){
-            for(int i=k; (int)theResult.charAt(i)!=32;i++){
-                stree = stree + theResult.charAt(i);
-                k++;
-            }
-            theNUmvber.add(Integer.parseInt(stree));
+                if ((int)theResult.charAt(k)!=32){
+                    for(int i=k; (int)theResult.charAt(i)!=32;i++){
+                        stree = stree + theResult.charAt(i);
+                        k++;
+                    }
+                    theNUmvber.add(Integer.parseInt(stree));
             }
         }
-        right_res.setVisibility(View.VISIBLE);
-        left_res.setVisibility(View.VISIBLE);
+
+        ArrayList<Integer> theFinalIndexes= new ArrayList<>();
+        for(int k=1; k<=theNUmvber.size()/2; k++){
+            theFinalIndexes.add(theNUmvber.get(2*k-1));
+        }
+
+
+        piro_right_res.setVisibility(View.VISIBLE);
+        piro_left_res.setVisibility(View.VISIBLE);
+
+        StringBuilder stringBuilder =  new StringBuilder();
+        int theIndex = 0;
+
+
+        if(ResultIndex2 >=0 && ResultIndex2<theFinalIndexes.size() ){
+              theIndex = theFinalIndexes.get(ResultIndex2);
+        }
+
+
+        if(theIndex<100){
+            for(int i =0; i<200; i++){
+                stringBuilder.append(" ").append(allTheTxtInArray[i]).append(" ");
+            }
+        }else {
+
+            if(theIndex+100>allTheTxtInArray.length){
+
+                for(int k= theIndex-100; k<allTheTxtInArray.length; k++){
+
+                    stringBuilder.append(" ").append(allTheTxtInArray[k]).append(" ");
+
+                }
+
+            }
+
+            else {
+                    for (int k=theIndex-100; k<theIndex+100; k++){
+                        stringBuilder.append(" ").append(allTheTxtInArray[k]).append(" ");
+                    }
+            }
+        }
 
 
 
+        //formatted text
+        String Highlighted_text = "<span style='background-color:yellow'>" + allTheTxtInArray[ResultIndex2] + "</span>";
+        //modify result
+        String highlighted_result = stringBuilder.toString().replaceAll(allTheTxtInArray[ResultIndex2], Highlighted_text);
+
+        extractedTV.setText(highlighted_result);
 
     }
 }
