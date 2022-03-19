@@ -1,26 +1,65 @@
 package com.example.qfind;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.media.Image;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.odml.image.MlImage;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.Text;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final int STORAGE_PERMISSION_CODE = 1;
+    private  static final int request_camera_code=1;
 
     EditText editText;
 
@@ -40,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView left_res;
     ImageView piro_right_res;
     ImageView piro_left_res;
+    ImageView image_to_text;
 
     ArrayList<Integer> theFinalIndexes;
     ArrayList<Integer> indexes;
@@ -48,17 +88,23 @@ public class MainActivity extends AppCompatActivity {
 
     HashMap<String, Integer> hashMap;
     Integer image_token=0;
+String theCameraCapturedResult = "";
+    ActivityResultLauncher<Intent> launcher;
+
 
     private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
         setContentView(R.layout.activity_main);
 
         extractedTV = findViewById(R.id.idPDFTV);
-      seeAllTxtBtn = findViewById(R.id.idBtnExtract);
-
+        seeAllTxtBtn = findViewById(R.id.idBtnExtract);
+        image_to_text = findViewById(R.id.image_to_text);
         add_pdf_button = findViewById(R.id.add_pdf);
         editText = findViewById(R.id.the_q_bar);
         search_btn = findViewById(R.id.search);
@@ -75,8 +121,66 @@ public class MainActivity extends AppCompatActivity {
         piro_right_res.setVisibility(View.GONE);
         piro_left_res.setVisibility(View.GONE);
 
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            requestStoragePermission();
+        }
+
+
         DataHandler handler = new DataHandler(this);
         SQLiteDatabase db = handler.getReadableDatabase();
+
+        //text Recognition from camera part start
+        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+
+
+        if(ContextCompat.checkSelfPermission(MainActivity.this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ){
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.CAMERA}, request_camera_code);
+        }
+        launcher  = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode()==RESULT_OK && result.getData()  != null){
+                    Bundle bundle = result.getData().getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");
+                    InputImage image = InputImage.fromBitmap(bitmap, 0);
+
+//                    // [START run_detector]
+        Task<Text> resultee =
+                recognizer.process(image)
+                        .addOnSuccessListener(new OnSuccessListener<Text>() {
+                            @Override
+                            public void onSuccess(Text visionText) {
+
+
+                                theCameraCapturedResult = visionText.getText();
+
+                                extractedTV.setText(theCameraCapturedResult);
+                                editText.setText(theCameraCapturedResult);
+                            }
+                        })
+                        .addOnFailureListener(
+                                new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(MainActivity.this, "Something went wrong!!", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                }
+            }
+        });
+        image_to_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                launcher.launch(camera);
+
+
+            }
+        });
+
+        //text recognition form camera ends
 
 
         DataHandler2 dataHandler2 = new DataHandler2(this);
@@ -201,6 +305,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+
+        getMenuInflater().inflate(R.menu.actionbar1,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.copy_txt:
+                ClipboardManager clipboardManager = (ClipboardManager)  getSystemService(Context.CLIPBOARD_SERVICE);
+                if(extractedTV.getText().toString().equals("")) {
+                    Toast.makeText(MainActivity.this,"nothing to copied", Toast.LENGTH_SHORT).show(); }
+                    else {
+                    ClipData clipData = ClipData.newPlainText("textview txt", extractedTV.getText().toString());
+                    clipboardManager.setPrimaryClip(clipData);
+                    Toast.makeText(MainActivity.this, "Copied", Toast.LENGTH_SHORT).show();
+                }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     //printing the saved pdfs and in process converting the elements of the database into Arraylist
     private ArrayList<String> transfer_the_databasePath_toArrayList(SQLiteDatabase db) {
@@ -253,8 +387,11 @@ public class MainActivity extends AppCompatActivity {
 
     //code to open the pdf add activity
     private void StartAddActivity() {
+
         Intent intent = new Intent(this, MainActivity2.class);
+
         startActivity(intent);
+
     }
 
     //code to read the saved pdf

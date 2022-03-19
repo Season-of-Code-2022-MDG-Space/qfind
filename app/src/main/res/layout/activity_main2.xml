@@ -49,13 +49,13 @@
             tools:layout_editor_absoluteX="153dp"
             tools:layout_editor_absoluteY="220dp" />
 
-<!--        <Button-->
-<!--            android:id="@+id/remove_path"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:gravity="center"-->
-<!--            android:text="WRITE THE INDEX OF PATH AND REMOVE THE PATH" />-->
+        <Button
+            android:id="@+id/remove_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="WRITE THE INDEX OF PATH AND REMOVE THE PATH" />
 
 
     </LinearLayout>

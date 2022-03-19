@@ -31,6 +31,7 @@ Button delete;
         delete = findViewById(R.id.delete);
         DataHandler handler = new DataHandler(MainActivity2.this);
         SQLiteDatabase db = handler.getWritableDatabase();
+remove_path.setVisibility(View.GONE);
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,9 +64,10 @@ Button delete;
 
 
 
-                String str = editText.getText().toString();
+               String str = editText.getText().toString();
+               editText.getText().clear();
 
-                ContentValues values = new ContentValues();
+                             ContentValues values = new ContentValues();
                 values.put("PATH", "NO PDF IN THIS");
 
               //  db.delete("FILE_PATHS", "id = ?",new String[]{(str)});

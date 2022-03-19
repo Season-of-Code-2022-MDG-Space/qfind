@@ -25,22 +25,36 @@
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
             android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/the_q_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#FFFFFF"
-                android:ems="10"
-                android:hint="Enter the Text"
-                android:inputType="textPersonName"
-                android:textSize="20sp" />
+    <EditText
+        android:id="@+id/the_q_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:hint="Enter the Text"
+        android:inputType="textPersonName"
+        android:textSize="20sp" />
 
+    <ImageView
+        android:id="@+id/image_to_text"
+        android:layout_width="61dp"
+        android:layout_height="match_parent"
+        android:background="#F3EDED"
+        android:src="@drawable/ic_baseline_photo_camera_24" />
+
+
+</LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E2F3F0"
                 android:orientation="horizontal">
 
                 <Button
@@ -130,6 +144,7 @@
             <!-- textview to display the extracted text-->
             <TextView
                 android:id="@+id/idPDFTV"
+                android:textIsSelectable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
