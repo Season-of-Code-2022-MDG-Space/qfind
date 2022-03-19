@@ -45,7 +45,7 @@
         android:id="@+id/image_to_text"
         android:layout_width="61dp"
         android:layout_height="match_parent"
-        android:background="#F3EDED"
+        android:background="#E2F3F0"
         android:src="@drawable/ic_baseline_photo_camera_24" />
 
 
@@ -66,7 +66,7 @@
                     android:layout_margin="8dp"
                     android:layout_weight="1"
                     android:backgroundTint="#0099FF"
-                    android:text="Pro search" />
+                    android:text="Search" />
 
                 <Button
                     android:id="@+id/search"
@@ -77,7 +77,7 @@
                     android:layout_weight="1"
 
                     android:backgroundTint="#0099FF"
-                    android:text="search" />
+                    android:text="ctrl f" />
 
 
             </LinearLayout>
@@ -85,7 +85,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="#E2F3F0"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -144,6 +144,7 @@
             <!-- textview to display the extracted text-->
             <TextView
                 android:id="@+id/idPDFTV"
+                android:layout_margin="8dp"
                 android:textIsSelectable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

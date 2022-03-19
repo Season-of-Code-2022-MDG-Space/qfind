@@ -6,4 +6,12 @@
         android:icon="@drawable/ic_baseline_content_copy_24"
         android:id="@+id/copy_txt"
         app:showAsAction="always" />
+
+
+    <item android:title="helpjj"
+        android:icon="@drawable/ic_baseline_help_outline_24"
+        android:id="@+id/hell"
+        app:showAsAction="always" />
+
+
 </menu>

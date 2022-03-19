@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -24,6 +25,7 @@ Button delete;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        updateTheTasks();
 
         editText = findViewById(R.id.edit_text);
         save_path = findViewById(R.id.save_path);
@@ -50,12 +52,16 @@ remove_path.setVisibility(View.GONE);
 
 
         String str = editText.getText().toString();
-        ContentValues values = new ContentValues();
-        values.put("PATH", str);
-        db.insert("FILE_PATHS",null, values);
+        if(str.equals("")){
+            Toast.makeText(MainActivity2.this, "This Field can't be Empty", Toast.LENGTH_SHORT).show();
+        }else {
+            editText.getText().clear();
+            ContentValues values = new ContentValues();
+            values.put("PATH", str);
+            db.insert("FILE_PATHS", null, values);
 
-        updateTheTasks();
-
+            updateTheTasks();
+        }
     }
 });
         remove_path.setOnClickListener(new View.OnClickListener() {

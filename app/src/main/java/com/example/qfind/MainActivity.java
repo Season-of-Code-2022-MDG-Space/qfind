@@ -18,10 +18,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.media.Image;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
@@ -29,7 +25,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,7 +34,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.odml.image.MlImage;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -47,10 +41,6 @@ import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -58,7 +48,6 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int STORAGE_PERMISSION_CODE = 1;
     private  static final int request_camera_code=1;
 
     EditText editText;
@@ -80,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView piro_right_res;
     ImageView piro_left_res;
     ImageView image_to_text;
+    ImageView helpme;
 
     ArrayList<Integer> theFinalIndexes;
     ArrayList<Integer> indexes;
@@ -88,18 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
     HashMap<String, Integer> hashMap;
     Integer image_token=0;
-String theCameraCapturedResult = "";
+    String theCameraCapturedResult = "";
     ActivityResultLauncher<Intent> launcher;
-
+    Bitmap bitmap12;
 
     private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-
         setContentView(R.layout.activity_main);
 
         extractedTV = findViewById(R.id.idPDFTV);
@@ -110,7 +97,7 @@ String theCameraCapturedResult = "";
         search_btn = findViewById(R.id.search);
         seepdf = findViewById(R.id.showpdf);
         pro_search_btn = findViewById(R.id.pro_search);
-
+        helpme =findViewById(R.id.hell);
         right_res =findViewById(R.id.right_result);
         left_res =findViewById(R.id.left_result);
         right_res.setVisibility(View.GONE);
@@ -120,6 +107,7 @@ String theCameraCapturedResult = "";
         piro_left_res =findViewById(R.id.piro_left_result);
         piro_right_res.setVisibility(View.GONE);
         piro_left_res.setVisibility(View.GONE);
+
 
         if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED)
@@ -144,32 +132,38 @@ String theCameraCapturedResult = "";
                 if(result.getResultCode()==RESULT_OK && result.getData()  != null){
                     Bundle bundle = result.getData().getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");
+
                     InputImage image = InputImage.fromBitmap(bitmap, 0);
 
-//                    // [START run_detector]
-        Task<Text> resultee =
-                recognizer.process(image)
-                        .addOnSuccessListener(new OnSuccessListener<Text>() {
-                            @Override
-                            public void onSuccess(Text visionText) {
 
 
-                                theCameraCapturedResult = visionText.getText();
+                    // [START run_detector]
+                    Task<Text> resultee =
+                            recognizer.process(image)
+                                    .addOnSuccessListener(new OnSuccessListener<Text>() {
+                                        @Override
+                                        public void onSuccess(Text visionText) {
 
-                                extractedTV.setText(theCameraCapturedResult);
-                                editText.setText(theCameraCapturedResult);
-                            }
-                        })
-                        .addOnFailureListener(
-                                new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(MainActivity.this, "Something went wrong!!", Toast.LENGTH_LONG).show();
-                                    }
-                                });
+
+                                            theCameraCapturedResult = visionText.getText().toString();
+
+                                            extractedTV.setText(theCameraCapturedResult);
+
+                                        }
+                                    })
+                                    .addOnFailureListener(
+                                            new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(MainActivity.this, "Something went wrong!!",
+                                                            Toast.LENGTH_LONG).show();
+                                                }
+                                            });
                 }
             }
         });
+
+
         image_to_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,9 +188,9 @@ String theCameraCapturedResult = "";
 
         piro_right_res.setOnClickListener(view -> {
             if(ResultIndex2< (theFinalIndexes.size())){
-            ResultIndex2++;
+                ResultIndex2++;
 
-            searchTextProStyle(piro_search_text, ResultIndex2);
+                searchTextProStyle(piro_search_text, ResultIndex2);
             }
         });
 
@@ -213,7 +207,7 @@ String theCameraCapturedResult = "";
                 ResultIndex++;
 
                 Log.e(TAG,"right");
-               searchTheText(the_search_text,ResultIndex);
+                searchTheText(the_search_text,ResultIndex);
                 Log.e(TAG, "searching doen");
             }
         });
@@ -236,11 +230,13 @@ String theCameraCapturedResult = "";
             redText = readText(transfer_the_databasePath_toArrayList(db));
 
             the_search_text = editText.getText().toString();
+            if (the_search_text.equals("")){
+                Toast.makeText(MainActivity.this, "The Field Can't Be Empty!", Toast.LENGTH_SHORT).show();
+            }       else {
+                editText.getText().clear();
 
-            editText.getText().clear();
-
-            searchTheText(the_search_text,ResultIndex );
-
+                searchTheText(the_search_text, ResultIndex);
+            }
         });
 
         pro_search_btn.setOnClickListener(view -> {
@@ -254,11 +250,13 @@ String theCameraCapturedResult = "";
             transfer_the_databasePath_hashmap(word_database);
 
             piro_search_text= editText.getText().toString();
+            if (piro_search_text.equals("")){
+                Toast.makeText(MainActivity.this, "The Field Can't Be Empty!", Toast.LENGTH_SHORT).show();
+            }else {
+                editText.getText().clear();
 
-            editText.getText().clear();
-
-            searchTextProStyle(piro_search_text,ResultIndex2);
-
+                searchTextProStyle(piro_search_text, ResultIndex2);
+            }
         });
 
         //done, no bugs
@@ -287,7 +285,7 @@ String theCameraCapturedResult = "";
                 paths_list = paths_list + pathsWay[pathsWay.length-1]+"\n\n\n\n";
             }
 
-           extractedTV.setText(paths_list);
+            extractedTV.setText(paths_list);
 
         });
 
@@ -305,7 +303,10 @@ String theCameraCapturedResult = "";
 
     }
 
+
+
     private void requestStoragePermission() {
+        int STORAGE_PERMISSION_CODE = 1;
         ActivityCompat.requestPermissions(this,
                 new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
     }
@@ -318,6 +319,8 @@ String theCameraCapturedResult = "";
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -326,14 +329,23 @@ String theCameraCapturedResult = "";
                 ClipboardManager clipboardManager = (ClipboardManager)  getSystemService(Context.CLIPBOARD_SERVICE);
                 if(extractedTV.getText().toString().equals("")) {
                     Toast.makeText(MainActivity.this,"nothing to copied", Toast.LENGTH_SHORT).show(); }
-                    else {
+                else {
                     ClipData clipData = ClipData.newPlainText("textview txt", extractedTV.getText().toString());
                     clipboardManager.setPrimaryClip(clipData);
                     Toast.makeText(MainActivity.this, "Copied", Toast.LENGTH_SHORT).show();
                 }
+
+            case R.id.hell:
+                 helpInstructionPage();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void helpInstructionPage() {
+        Intent intent = new Intent(MainActivity.this , helpInstruction.class);
+        startActivity(intent);
     }
 
     //printing the saved pdfs and in process converting the elements of the database into Arraylist
@@ -352,7 +364,7 @@ String theCameraCapturedResult = "";
                 cr.close();
             }
         }
-        extractedTV.setText(path.toString());
+       // extractedTV.setText(path.toString());
         return path;
     }
 
@@ -382,8 +394,6 @@ String theCameraCapturedResult = "";
         return hashMap.containsKey(str);
 
     }
-
-
 
     //code to open the pdf add activity
     private void StartAddActivity() {
@@ -423,47 +433,58 @@ String theCameraCapturedResult = "";
     //it search the text in the pdf text
     public void searchTheText(String str, Integer Result_Index) {
 
-        indexes = new ArrayList<Integer>();
+
         int totalChr = redText.length();
+        if (totalChr < 50000) {
+            //formatted text
+            String Highlighted_text = "<span style='background-color:yellow'>" + str + "</span>";
+            //modify result
+            String highlighted_result = redText.replaceAll(str, Highlighted_text);
 
-        for (int index = redText.indexOf(str);
-             index >= 0;
-             index = redText.indexOf(str, index + 1)) {
-            indexes.add(index);
-        }
-        //when nothing is found
+            extractedTV.setText(Html.fromHtml(highlighted_result, Html.FROM_HTML_MODE_LEGACY));
 
-        if (indexes.size() == 0) {
-            extractedTV.setText("Nothing found");
-            return;
-        }
+        } else {
+            indexes = new ArrayList<Integer>();
 
-
-        right_res.setVisibility(View.VISIBLE);
-        left_res.setVisibility(View.VISIBLE);
-        if (indexes.size() > Result_Index) {
-            if (indexes.get(ResultIndex) > 0) {
-                if (totalChr > 2000) {
-                    if (indexes.get(Result_Index) > 1000) {
-
-
-                        String resultee = redText.substring(indexes.get(Result_Index) - 1000, indexes.get(Result_Index)) + " ||@@@|| "
-                                + redText.substring(indexes.get(Result_Index), indexes.get(Result_Index) + str.length()) + " ||@@@|| "
-                                + redText.substring(indexes.get(Result_Index) + str.length(), totalChr);
-
-                        //formatted text
-                        String Highlighted_text = "<span style='background-color:yellow'>" + str + "</span>";
-                        //modify result
-                        String highlighted_result = resultee.replaceAll(str, Highlighted_text);
-
-                        extractedTV.setText(Html.fromHtml(highlighted_result, Html.FROM_HTML_MODE_LEGACY));
-                    } else extractedTV.setText(redText.substring(0, indexes.get(Result_Index) + 1000));
-
-                } else extractedTV.setText(redText.substring(0, totalChr));
+            for (int index = redText.indexOf(str);
+                 index >= 0;
+                 index = redText.indexOf(str, index + 1)) {
+                indexes.add(index);
             }
-        }else extractedTV.setText("Nothing else ahead");
-    }
+            //when nothing is found
 
+            if (indexes.size() == 0) {
+                extractedTV.setText("Nothing found");
+                return;
+            }
+
+
+            right_res.setVisibility(View.VISIBLE);
+            left_res.setVisibility(View.VISIBLE);
+            if (indexes.size() > Result_Index) {
+                if (indexes.get(ResultIndex) > 0) {
+                    if (totalChr > 2000) {
+                        if (indexes.get(Result_Index) > 1000) {
+
+
+                            String resultee = redText.substring(indexes.get(Result_Index) - 1000, indexes.get(Result_Index)) + " ||@@@|| "
+                                    + redText.substring(indexes.get(Result_Index), indexes.get(Result_Index) + str.length()) + " ||@@@|| "
+                                    + redText.substring(indexes.get(Result_Index) + str.length(), totalChr);
+
+                            //formatted text
+                            String Highlighted_text = "<span style='background-color:yellow'>" + str + "</span>";
+                            //modify result
+                            String highlighted_result = resultee.replaceAll(str, Highlighted_text);
+
+                            extractedTV.setText(Html.fromHtml(highlighted_result, Html.FROM_HTML_MODE_LEGACY));
+                        } else
+                            extractedTV.setText(redText.substring(0, indexes.get(Result_Index) + 1000));
+
+                    } else extractedTV.setText(redText.substring(0, totalChr));
+                }
+            } else extractedTV.setText("Nothing else ahead");
+        }
+    }
     public  void searchTextProStyle(String st, Integer Result_Index){
 
         String allTheTxtInArray[] = redText.split(" ");
@@ -476,12 +497,12 @@ String theCameraCapturedResult = "";
 
         for(int k=0 ; k<theResult.length(); k++){
             String stree = "";
-                if ((int)theResult.charAt(k)!=32){
-                    for(int i=k; (int)theResult.charAt(i)!=32;i++){
-                        stree = stree + theResult.charAt(i);
-                        k++;
-                    }
-                    theNUmvber.add(Integer.parseInt(stree));
+            if ((int)theResult.charAt(k)!=32){
+                for(int i=k; (int)theResult.charAt(i)!=32;i++){
+                    stree = stree + theResult.charAt(i);
+                    k++;
+                }
+                theNUmvber.add(Integer.parseInt(stree));
             }
         }
 
@@ -499,7 +520,7 @@ String theCameraCapturedResult = "";
 
 
         if(ResultIndex2 >=0 && ResultIndex2<theFinalIndexes.size() ){
-              theIndex = theFinalIndexes.get(ResultIndex2);
+            theIndex = theFinalIndexes.get(ResultIndex2);
         }
 
 
@@ -520,9 +541,9 @@ String theCameraCapturedResult = "";
             }
 
             else {
-                    for (int k=theIndex-100; k<theIndex+100; k++){
-                        stringBuilder.append(" ").append(allTheTxtInArray[k]).append(" ");
-                    }
+                for (int k=theIndex-100; k<theIndex+100; k++){
+                    stringBuilder.append(" ").append(allTheTxtInArray[k]).append(" ");
+                }
             }
         }
 
@@ -534,6 +555,26 @@ String theCameraCapturedResult = "";
         String highlighted_result = stringBuilder.toString().replaceAll(allTheTxtInArray[ResultIndex2], Highlighted_text);
         extractedTV.setText(Html.fromHtml(highlighted_result, Html.FROM_HTML_MODE_LEGACY));
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
