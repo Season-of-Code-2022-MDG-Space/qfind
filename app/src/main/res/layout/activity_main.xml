@@ -13,7 +13,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#8ECAFA"
+        android:background="#FFFFFF"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#FFFFFF"
                 android:ems="10"
-                android:hint="Enter the Question"
+                android:hint="Enter the Text"
                 android:inputType="textPersonName"
                 android:textSize="20sp" />
 
@@ -51,6 +51,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#0099FF"
                     android:text="Pro search" />
 
                 <Button
@@ -61,6 +62,7 @@
                     android:layout_margin="8dp"
                     android:layout_weight="1"
 
+                    android:backgroundTint="#0099FF"
                     android:text="search" />
 
 
@@ -78,17 +80,20 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
+
                 <ImageView
                     android:id="@+id/piro_left_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
-                    <TextView
+
+                <TextView
+                    android:id="@+id/the_result_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/the_result_bar"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
+
                 <ImageView
                     android:id="@+id/right_result"
                     android:layout_width="wrap_content"
@@ -119,7 +124,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginEnd="1dp"
             android:layout_marginBottom="1dp"
-            android:background="#FFFFFF">
+            android:background="#CEE9FB">
 
 
             <!-- textview to display the extracted text-->
@@ -139,7 +144,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
-            android:background="#8ECAFA"
+            android:background="#FFFFFF"
             android:orientation="horizontal"
 
             app:layout_constraintBottom_toBottomOf="parent"
@@ -153,6 +158,7 @@
                 android:layout_margin="8dp"
                 android:layout_marginBottom="20dp"
                 android:layout_weight="1"
+                android:backgroundTint="#0099FF"
                 android:text="See Text"
                 android:textAllCaps="false" />
 
@@ -163,6 +169,7 @@
                 android:layout_margin="8dp"
                 android:layout_marginBottom="20dp"
                 android:layout_weight="1"
+                android:backgroundTint="#0099FF"
                 android:text="PDFs"
                 android:textAllCaps="false" />
 
@@ -174,7 +181,7 @@
                 android:layout_margin="8dp"
 
                 android:layout_weight="1"
-                android:backgroundTint="@color/purple_500"
+                android:backgroundTint="#0099FF"
                 android:gravity="center"
                 android:text="Add PDFs"
                 android:textAllCaps="false" />

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView piro_right_res;
     ImageView piro_left_res;
 
-
+    ArrayList<Integer> theFinalIndexes;
     ArrayList<Integer> indexes;
     Integer ResultIndex =0;
     Integer ResultIndex2 =0;
@@ -89,14 +89,18 @@ public class MainActivity extends AppCompatActivity {
         piro_left_res.setClickable(true);
 
         piro_right_res.setOnClickListener(view -> {
-            if(ResultIndex2< (indexes).size()){
+            if(ResultIndex2< (theFinalIndexes.size())){
             ResultIndex2++;
+
+            searchTextProStyle(piro_search_text, ResultIndex2);
             }
         });
 
         piro_left_res.setOnClickListener(view -> {
             if(ResultIndex2>0){
                 ResultIndex2--;
+
+                searchTextProStyle(piro_search_text, ResultIndex2);
             }
         });
 
@@ -121,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
         //to search ctrl way
         search_btn.setOnClickListener(view -> {
 
+            piro_right_res.setVisibility(View.GONE);
+            piro_left_res.setVisibility(View.GONE);
+
 
             redText = readText(transfer_the_databasePath_toArrayList(db));
 
@@ -133,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         pro_search_btn.setOnClickListener(view -> {
+
+
+            right_res.setVisibility(View.GONE);
+            left_res.setVisibility(View.GONE);
 
             redText =readText(transfer_the_databasePath_toArrayList(db));
 
@@ -337,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        ArrayList<Integer> theFinalIndexes= new ArrayList<>();
+        theFinalIndexes= new ArrayList<>();
         for(int k=1; k<=theNUmvber.size()/2; k++){
             theFinalIndexes.add(theNUmvber.get(2*k-1));
         }
@@ -384,9 +395,7 @@ public class MainActivity extends AppCompatActivity {
         String Highlighted_text = "<span style='background-color:yellow'>" + allTheTxtInArray[ResultIndex2] + "</span>";
         //modify result
         String highlighted_result = stringBuilder.toString().replaceAll(allTheTxtInArray[ResultIndex2], Highlighted_text);
-
-        extractedTV.setText(highlighted_result);
-
+        extractedTV.setText(Html.fromHtml(highlighted_result, Html.FROM_HTML_MODE_LEGACY));
     }
 }
 
