@@ -17,10 +17,12 @@
         android:theme="@style/Theme.QFind">
         <activity
             android:name=".helpInstruction"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".splashscreen"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,9 +34,11 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".MainActivity2"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false">
 
             <!-- <intent-filter> -->

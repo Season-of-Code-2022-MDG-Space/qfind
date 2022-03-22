@@ -334,9 +334,11 @@ public class MainActivity extends AppCompatActivity {
                     clipboardManager.setPrimaryClip(clipData);
                     Toast.makeText(MainActivity.this, "Copied", Toast.LENGTH_SHORT).show();
                 }
+                break;
 
             case R.id.hell:
                  helpInstructionPage();
+                 break;
         }
 
         return super.onOptionsItemSelected(item);
